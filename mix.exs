@@ -5,7 +5,7 @@ defmodule Algo.MixProject do
     [
       app: :algo,
       version: "0.1.0",
-      elixir: "~> 1.12",
+      elixir: "~> 1.13",
       consolidate_protocols: Mix.env() != :test,
       deps: deps(),
       aliases: aliases(),
