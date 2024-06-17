@@ -173,14 +173,12 @@
           {Credo.Check.Design.DuplicatedCode, []},
           {Credo.Check.Design.SkipTestWithoutComment, []},
           {Credo.Check.Readability.AliasAs, []},
-          {Credo.Check.Readability.BlockPipe, []},
           {Credo.Check.Readability.ImplTrue, []},
           {Credo.Check.Readability.MultiAlias, []},
           {Credo.Check.Readability.NestedFunctionCalls, []},
           {Credo.Check.Readability.OneArityFunctionInPipe, []},
           {Credo.Check.Readability.OnePipePerLine, []},
           {Credo.Check.Readability.SeparateAliasRequire, []},
-          {Credo.Check.Readability.SingleFunctionToBlockPipe, []},
           {Credo.Check.Readability.SinglePipe, []},
           {Credo.Check.Readability.Specs, []},
           {Credo.Check.Readability.StrictModuleLayout, []},
@@ -205,6 +203,10 @@
           #
           # Custom checks can be created using `mix credo.gen.check`.
           #
+        ],
+        disabled: [
+          {Credo.Check.Readability.BlockPipe, []},
+          {Credo.Check.Readability.SingleFunctionToBlockPipe, []}
         ]
       }
     }

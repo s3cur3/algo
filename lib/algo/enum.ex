@@ -29,4 +29,42 @@ defmodule Algo.Enum do
   def any_id?(enum, id) do
     Enum.any?(enum, &(&1.id == id))
   end
+
+  @doc """
+  Maps over an enumerable, stopping if an `:error` result is encountered.
+
+  Examples:
+
+    iex> Enum.map_while_ok([1, 2, 3], fn x -> {:ok, x * 2} end)
+    {:ok, [2, 4, 6]}
+
+    iex> Enum.map_while_ok([1, 2, 3], fn x -> if x == 2, do: {:error, :oh_no}, else: {:ok, x} end)
+    {:error, :oh_no}
+
+    iex> Enum.map_while_ok([1, 2, 3], fn x -> if x == 2, do: :error, else: {:ok, x} end)
+    :error
+
+    iex> Enum.map_while_ok([1, 2, 3], fn _ -> :ok end)
+    {:ok, [:ok, :ok, :ok]}
+
+    iex> Enum.map_while_ok([], fn _ -> :error end)
+    {:ok, []}
+  """
+  @spec map_while_ok(Enumerable.t(), (any -> {:ok, any} | {:error, any} | :ok | :error)) ::
+          {:ok, list(any)} | {:error, any} | :error
+  def map_while_ok(enum, fun) do
+    enum
+    |> Enum.reduce_while({:ok, []}, fn item, {:ok, acc} ->
+      case fun.(item) do
+        {:ok, result} -> {:cont, {:ok, [result | acc]}}
+        :ok -> {:cont, {:ok, [:ok | acc]}}
+        {:error, error} -> {:halt, {:error, error}}
+        :error -> {:halt, :error}
+      end
+    end)
+    |> case do
+      {:ok, results} -> {:ok, Enum.reverse(results)}
+      error -> error
+    end
+  end
 end
